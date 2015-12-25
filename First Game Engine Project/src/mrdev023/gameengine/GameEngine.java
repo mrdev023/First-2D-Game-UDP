@@ -1,17 +1,20 @@
 package mrdev023.gameengine;
 
 import mrdev023.gameengine.gamestate.main.*;
+import mrdev023.network.client.*;
+import mrdev023.network.packet.*;
 import mrdev023.opengl.*;
 
 public class GameEngine {
 	
 	private static Frame frame;
 	
-	private static long current,previous,elapsedInfo,elapsedTicks;
+	private static long current,previous,elapsedInfo,elapsedTicks,elapsedPing;
 	private static int countFPS = 0,countTICKS = 0,FPS,TICKS;
 	private static boolean IsRunning = false;
 	private static GameState state = GameState.MAIN;
 	private static String title;
+	private static long ping = 0; 
 
 	public static void start(String title,int width,int height){
 		try{
@@ -36,6 +39,7 @@ public class GameEngine {
 			current = System.nanoTime();
 			elapsedInfo += current - previous;
 			elapsedTicks += current - previous;
+			elapsedPing += current - previous;
 			
 			if(frame.isClosedRequested()){
 				IsRunning = false;
@@ -47,6 +51,7 @@ public class GameEngine {
 				state.updateKeyboard();
 				state.updateMouse();
 				state.update();
+				MainClient.client.update();
 				countTICKS++;
 				elapsedTicks -= 1000000000/60;
 			}else{
@@ -59,12 +64,17 @@ public class GameEngine {
 				countFPS++;
 			}
 			
+			if(elapsedPing >= 1000000000){
+				MainClient.send(new PingClientPacket(System.currentTimeMillis()));
+				elapsedPing = 0;
+			}
+			
 			if(elapsedInfo >= 1000000000){
 				FPS = countFPS;
 				countFPS = 0;
 				TICKS = countTICKS;
 				countTICKS = 0;
-				frame.setTitle(title + " | FPS:" + FPS + " | TICKS:" + TICKS);
+				frame.setTitle(title + " | FPS:" + FPS + " | TICKS:" + TICKS + " | PING:" + ping + "ms" + " | " + MainClient.pseudo + ((MainClient.client.isConnect())?" connected !":" disconnected !"));
 				elapsedInfo -= 1000000000;
 			}
 		}
@@ -74,6 +84,7 @@ public class GameEngine {
 	public static void destroy(){
 		state.destroy();
 		frame.destroy();
+		MainClient.client.destroy();
 	}
 
 	public static Frame getFrame() {
@@ -98,6 +109,9 @@ public class GameEngine {
 		GameEngine.state.init();
 	}
 	
+	public static void setPing(long ping){
+		GameEngine.ping = ping;
+	}
 	
 	
 }
