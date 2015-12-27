@@ -53,7 +53,7 @@ public class Client extends Thread{
 					DataBuffer dataBuff = new DataBuffer();
 					dataBuff.setData(data);
 					try {
-						String name = dataBuff.getString();
+						String name = Register.getClass(dataBuff.getInt());
 						IPacket obj = (IPacket)Class.forName(name).newInstance();
 						if(obj == null)continue;
 						obj.read(dataBuff);
@@ -88,7 +88,7 @@ public class Client extends Thread{
 	
 	public void send(IPacket packet) throws Exception{
 		DataBuffer data = new DataBuffer();
-		data.put(packet.getClass().getName());
+		data.put(Register.getClassID(packet.getClass()));
 		packet.write(data);
 		DatagramPacket sendPacket = new DatagramPacket(data.getData(),data.getData().length,address,port); 
 		client.send(sendPacket);

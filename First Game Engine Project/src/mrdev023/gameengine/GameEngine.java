@@ -1,7 +1,11 @@
 package mrdev023.gameengine;
 
+import java.io.*;
+
+import mrdev023.audio.*;
 import mrdev023.gameengine.gamestate.main.*;
 import mrdev023.network.client.*;
+import mrdev023.network.common.*;
 import mrdev023.network.packet.*;
 import mrdev023.opengl.*;
 
@@ -28,8 +32,19 @@ public class GameEngine {
 	}
 	
 	public static void init(){
+//		try{
+//			File file = new File("/log/" + System.currentTimeMillis() + ".txt");
+//			if(!file.exists()){
+//				file.createNewFile();
+//			}
+//			PrintStream out = new PrintStream(file);
+//			System.setOut(out);
+//		}catch(Exception e){e.printStackTrace();}
+		Input.init();
 		current = System.nanoTime();
 		state.init();
+		Texture.init();
+		Audio.create();
 	}
 	
 	public static void loop(){
@@ -48,6 +63,7 @@ public class GameEngine {
 			
 			if(elapsedTicks >= 1000000000/60){
 				frame.updateEvent();
+				Input.update();
 				state.updateKeyboard();
 				state.updateMouse();
 				state.update();
@@ -83,7 +99,10 @@ public class GameEngine {
 	
 	public static void destroy(){
 		state.destroy();
+		Audio.destroy();
+		Input.destroy();
 		frame.destroy();
+		MainClient.send(new ClientDisconnect(MainClient.pseudo));
 		MainClient.client.destroy();
 	}
 

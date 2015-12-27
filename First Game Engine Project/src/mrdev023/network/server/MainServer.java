@@ -40,6 +40,7 @@ public class MainServer extends Thread{
 			server = new DatagramSocket(9999);
 			System.out.println("Server binding " + InetAddress.getLocalHost().getHostAddress() + ":" + PORT);
 			isRunning = true;
+			Register.registerClass();
 			(new Thread(new MainServer())).start();
 			while(isRunning){
 				byte[] data = new byte[DataBuffer.SIZE];
@@ -49,7 +50,7 @@ public class MainServer extends Thread{
 					if(p.getAddress() != null){
 						DataBuffer buffer = new DataBuffer();
 						buffer.setData(data);
-						IPacket packet = (IPacket)Class.forName(buffer.getString()).newInstance();
+						IPacket packet = (IPacket)Class.forName(Register.getClass(buffer.getInt())).newInstance();
 						packet.read(buffer);
 						Client c = getClient(p.getAddress(), p.getPort());
 						if(c == null){
@@ -112,7 +113,7 @@ public class MainServer extends Thread{
 	public static void send(IPacket packet,InetAddress ip,int port){
 		try {
 			DataBuffer buffer = new DataBuffer();
-			buffer.put(packet.getClass().getName());
+			buffer.put(Register.getClassID(packet.getClass()));
 			packet.write(buffer);
 			DatagramPacket p = new DatagramPacket(buffer.getData(), buffer.getData().length,ip,port);
 			server.send(p);

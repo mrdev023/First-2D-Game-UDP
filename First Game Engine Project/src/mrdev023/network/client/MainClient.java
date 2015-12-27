@@ -15,8 +15,9 @@ public class MainClient {
 	public static String pseudo = "";
 	
 	public static void startClient() {
+		Register.registerClass();
 		try {
-			String input = JOptionPane.showInputDialog(null,"Entrer ip:port du serveur");
+			String input = "127.0.0.1:9999";//JOptionPane.showInputDialog(null,"Entrer ip:port du serveur");
 			String[] i = input.split(":");
 			String pseudo = JOptionPane.showInputDialog(null,"Pseudo:");
 			client = new Client(InetAddress.getByName(i[0]),Integer.parseInt(i[1]));

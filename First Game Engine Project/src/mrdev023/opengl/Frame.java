@@ -36,7 +36,7 @@ public class Frame {
 		//definie la sortie d'erreur
 		errorCallback = new GLFWErrorCallback() {
 			public void invoke(int error, long description) {
-				System.err.println("ID : " + error + " | Description :" + description);				
+				//System.err.println("ID : " + error + " | Description :" + description);				
 			}
 		};
 		glfwSetErrorCallback(errorCallback);
@@ -94,7 +94,7 @@ public class Frame {
 		//definie la sortie d'erreur
 		errorCallback = new GLFWErrorCallback() {
 			public void invoke(int error, long description) {
-				System.err.println("ID : " + error + " | Description :" + description);				
+				//System.err.println("ID : " + error + " | Description :" + description);				
 			}
 		};
 		glfwSetErrorCallback(errorCallback);
