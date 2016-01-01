@@ -2,7 +2,7 @@ package mrdev023.opengl.gui;
 
 import mrdev023.opengl.*;
 
-public class Message {
+public class Message{
 
 	public static final int TIME_OUT = 5000;
 	private long current, previous, time = 0;
