@@ -32,14 +32,6 @@ public class GameEngine {
 	}
 	
 	public static void init(){
-//		try{
-//			File file = new File("/log/" + System.currentTimeMillis() + ".txt");
-//			if(!file.exists()){
-//				file.createNewFile();
-//			}
-//			PrintStream out = new PrintStream(file);
-//			System.setOut(out);
-//		}catch(Exception e){e.printStackTrace();}
 		Input.init();
 		current = System.nanoTime();
 		state.init();
