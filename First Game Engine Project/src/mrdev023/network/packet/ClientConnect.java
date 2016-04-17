@@ -2,7 +2,9 @@ package mrdev023.network.packet;
 
 import java.net.*;
 
+import mrdev023.entities.*;
 import mrdev023.gameengine.gamestate.*;
+import mrdev023.math.*;
 import mrdev023.network.common.*;
 import mrdev023.network.packet.main.*;
 import mrdev023.opengl.gui.*;
@@ -24,7 +26,7 @@ public class ClientConnect implements IPacket{
 	
 	public void manage(Client client, IPacket packet) throws Exception {
 		MainState.messages.add(new Message(pseudo + " has connected !"));
-		System.out.println("hello");
+		Client.entities.add(new Player(new Vector2f(0,0),pseudo));
 	}
 	
 	public void manage(Client client, IPacket packet, DatagramSocket server) throws Exception {

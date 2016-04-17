@@ -1,8 +1,9 @@
 package mrdev023.network.server;
-import java.io.*;
 import java.net.*;
 import java.util.*;
 
+import mrdev023.entities.*;
+import mrdev023.math.*;
 import mrdev023.network.common.*;
 import mrdev023.network.packet.*;
 import mrdev023.network.packet.main.*;
@@ -61,7 +62,15 @@ public class MainServer extends Thread{
 								packet.manage(c, packet,server);
 								clients.add(c);
 								System.out.println(c.getPseudo() + " has connected " + c.getAddress().getHostName() + ":" + c.getPort());
-								sendToClients(new ClientConnect(c.getPseudo()));
+								c.player = new Player(new Vector2f(0,0),c.getPseudo());
+								sendToClientsWithoutClient(new Client[]{c},new ClientConnect(c.getPseudo()));
+								sendToClientsWithoutClient(new Client[]{c},new UpdateColor(c.getPseudo(),c.player.getColor()));
+								for(Client cl : clients){
+										c.send(new ClientConnect(cl.getPseudo()));
+										c.send(new UpdateXPacket(cl.getPseudo(), cl.player.getPosition().getX()));
+										c.send(new UpdateYPacket(cl.getPseudo(), cl.player.getPosition().getY()));
+										c.send(new UpdateColor(cl.getPseudo(), cl.player.getColor()));
+								}
 							}
 						}else{
 							packet.manage(c, packet,server);

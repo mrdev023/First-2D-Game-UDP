@@ -2,6 +2,7 @@ package mrdev023.network.packet;
 
 import java.net.*;
 
+import mrdev023.entities.*;
 import mrdev023.gameengine.gamestate.*;
 import mrdev023.network.common.*;
 import mrdev023.network.packet.main.*;
@@ -25,6 +26,8 @@ public String pseudo;
 	
 	public void manage(Client client, IPacket packet) throws Exception {
 		MainState.messages.add(new Message(pseudo + " has disconnected !"));
+		Entity e = Client.getEntityByName(pseudo);
+		if(e != null)Client.entities.remove(e);
 	}
 	
 	public void manage(Client client, IPacket packet, DatagramSocket server) throws Exception {

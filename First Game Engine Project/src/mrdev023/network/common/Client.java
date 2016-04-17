@@ -2,7 +2,9 @@ package mrdev023.network.common;
 
 import java.io.*;
 import java.net.*;
+import java.util.*;
 
+import mrdev023.entities.*;
 import mrdev023.network.packet.main.*;
 
 public class Client extends Thread{
@@ -17,6 +19,13 @@ public class Client extends Thread{
 	private String pseudo = "Default";
 	private String state = "";
 	private boolean isAdmin = false;
+	
+	//Client
+	public static ArrayList<Entity> entities = new ArrayList<Entity>();
+	
+	//Server
+	public Player player;
+	
 	
 	public Client(InetAddress address,int port) throws SocketException{
 		client = new DatagramSocket();
@@ -93,6 +102,24 @@ public class Client extends Thread{
 		DatagramPacket sendPacket = new DatagramPacket(data.getData(),data.getData().length,address,port); 
 		client.send(sendPacket);
 		elapsed = 0;
+	}
+	
+	public void render2D() {
+		for(Entity e : entities)e.render();
+	}
+
+	public static Entity getEntityByName(String name){
+		for(Entity e : entities){
+			if(e.getName().equals(name))return e;
+		}
+		return null;
+	}
+	
+	public static int getIndexEntityByName(String name){
+		for(int i = 0;i < entities.size();i++){
+			if(entities.get(i).getName().equals(name))return i;
+		}
+		return -1;
 	}
 
 	public DatagramSocket getClient() {

@@ -7,9 +7,10 @@ import java.util.*;
 
 import javax.swing.*;
 
-import mrdev023.gameengine.*;
+import mrdev023.entities.*;
 import mrdev023.gameengine.gamestate.main.*;
 import mrdev023.network.client.*;
+import mrdev023.network.common.*;
 import mrdev023.network.packet.*;
 import mrdev023.opengl.*;
 import mrdev023.opengl.gui.*;
@@ -40,10 +41,8 @@ public class MainState implements IGameState{
 		}
 	}
 
-	public void render2D() {
-		
-	}
 
+	
 	public void update() {
 		ArrayList<Message> rmList = new ArrayList<Message>();
 		for(Message m : messages){
@@ -67,10 +66,60 @@ public class MainState implements IGameState{
 				e.printStackTrace();
 			}
 		}
+		if(Input.isKey(GLFW_KEY_W)){
+			try {
+				MainClient.client.send(new UpdateYPacket(MainClient.pseudo,Client.getEntityByName(MainClient.pseudo).getPosition().getY()+1));
+			} catch (HeadlessException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		if(Input.isKey(GLFW_KEY_S)){
+			try {
+				MainClient.client.send(new UpdateYPacket(MainClient.pseudo,Client.getEntityByName(MainClient.pseudo).getPosition().getY()-1));
+			} catch (HeadlessException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		if(Input.isKey(GLFW_KEY_A)){
+			try {
+				MainClient.client.send(new UpdateXPacket(MainClient.pseudo,Client.getEntityByName(MainClient.pseudo).getPosition().getX()-1));
+			} catch (HeadlessException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		if(Input.isKey(GLFW_KEY_D)){
+			try {
+				MainClient.client.send(new UpdateXPacket(MainClient.pseudo,Client.getEntityByName(MainClient.pseudo).getPosition().getX()+1));
+			} catch (HeadlessException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void updateMouse() {
 		
+	}
+
+	@Override
+	public void render2D() {
+		synchronized(Client.entities){
+			try{
+				for(Entity e : Client.entities){
+					e.render();
+				}
+			}catch(ConcurrentModificationException e){
+				e.printStackTrace();
+			}
+
+		}
 	}
 
 }

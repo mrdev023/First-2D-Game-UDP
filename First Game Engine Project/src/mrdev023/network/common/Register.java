@@ -16,6 +16,9 @@ public class Register {
 		addClass(MessageTestPacket.class);
 		addClass(OutOfSocketPacket.class);
 		addClass(PingClientPacket.class);
+		addClass(UpdateXPacket.class);
+		addClass(UpdateYPacket.class);
+		addClass(UpdateColor.class);
 	}
 	
 	public static void addClass(Class cl){

@@ -5,6 +5,10 @@ public class Mathf {
 	public static final float PI = (float)Math.PI;
 	public static final float EPSILON = 1.401298e-45f;
 	
+	public static float random(){
+		return (float)Math.random();
+	}
+	
 	public static float cos(float angle){
 		return (float)Math.cos(angle);
 	}
