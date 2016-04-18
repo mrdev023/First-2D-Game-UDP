@@ -11,11 +11,19 @@ public abstract class Entity {
 	private Vector2f position;
 	private String name;
 	private Color4f color;
+	private int life;
+	private int mana;
+	private int exp;
+	private int level;
 	
 	public Entity(Vector2f pos,String name){
 		this.name = name;
 		this.position = pos;
 		this.color = new Color4f(Mathf.random(),Mathf.random(),Mathf.random(),1.0f);
+		this.life = 100;
+		this.mana = 100;
+		this.exp = 0;
+		this.level = 0;
 	}
 	
 	public Entity(Vector2f pos){
@@ -58,7 +66,29 @@ public abstract class Entity {
 		System.out.println(color);
 		this.color = color;
 	}
-	
-	
+
+	public int getLife() {
+		return life;
+	}
+
+	public void setLife(int life) {
+		this.life = life;
+	}
+
+	public int getMana() {
+		return mana;
+	}
+
+	public void setMana(int mana) {
+		this.mana = mana;
+	}
+
+	public int getExp() {
+		return exp;
+	}
+
+	public void setExp(int exp) {
+		this.exp = exp;
+	}
 	
 }

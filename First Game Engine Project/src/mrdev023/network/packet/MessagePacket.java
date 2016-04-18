@@ -17,12 +17,12 @@ public class MessagePacket implements IPacket{
 	public MessagePacket(String message,String pseudo){this.message = message;this.pseudo = pseudo;}
 
 	public void write(DataBuffer buff) throws Exception {
-		buff.put(message);
+		buff.put(message.toLowerCase());
 		buff.put(pseudo);
 	}
 
 	public void read(DataBuffer buff) throws Exception {
-		this.message = buff.getString();
+		this.message = buff.getString().toLowerCase();
 		this.pseudo = buff.getString();
 	}
 
@@ -32,10 +32,11 @@ public class MessagePacket implements IPacket{
 
 	public void manage(Client client, IPacket packet, DatagramSocket server) throws Exception {
 		if(message.startsWith("/")){
-			if(message.split(" ")[0].equals("/login") && message.split(" ").length == 2){
-				if(message.split(" ")[1].equals(MainServer.password)){
+			if(message.split(" ")[0].toLowerCase().equals("/login") && message.split(" ").length == 2){
+				if(message.split(" ")[1].toLowerCase().equals(MainServer.password)){
 					MainServer.sendToClient(client, new MessagePacket("login successful!", "Server"));
 					client.setAdmin(true);
+					MainServer.sendToClients(new UpdatePseudoPacket(client.getPseudo(), "<admin>" + client.getPseudo()));
 				}else{
 					MainServer.sendToClient(client, new MessagePacket("password incorrect!", "Server"));
 				}
@@ -47,6 +48,7 @@ public class MessagePacket implements IPacket{
 					}else if(cmd[0].equals("/logout")){
 						MainServer.sendToClient(client, new MessagePacket("logout successful!", "Server"));
 						client.setAdmin(false);
+						MainServer.sendToClients(new UpdatePseudoPacket("<admin>" + client.getPseudo(), client.getPseudo()));
 					}else if(cmd[0].equals("/help")){
 						MainServer.sendToClient(client, new MessagePacket("Help", "Server"));
 						MainServer.sendToClient(client, new MessagePacket("/login [password]", "Server"));

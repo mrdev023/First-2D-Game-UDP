@@ -19,6 +19,7 @@ public class Register {
 		addClass(UpdateXPacket.class);
 		addClass(UpdateYPacket.class);
 		addClass(UpdateColor.class);
+		addClass(UpdatePseudoPacket.class);
 	}
 	
 	public static void addClass(Class cl){

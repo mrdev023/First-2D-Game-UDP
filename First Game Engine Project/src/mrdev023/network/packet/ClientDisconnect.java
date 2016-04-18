@@ -32,7 +32,7 @@ public String pseudo;
 	
 	public void manage(Client client, IPacket packet, DatagramSocket server) throws Exception {
 		System.out.println(client.getPseudo() + " has diconnected " + client.getAddress().getHostName() + ":" + client.getPort());
-		MainServer.sendToClients(new ClientDisconnect(client.getPseudo()));
+		MainServer.sendToClients(new ClientDisconnect((client.isAdmin()?"<admin>":"")+client.getPseudo()));
 		client.setRunning(false);
 		MainServer.clients.remove(client);
 	}
