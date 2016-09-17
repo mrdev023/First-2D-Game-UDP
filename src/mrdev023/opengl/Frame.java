@@ -8,7 +8,6 @@ import mrdev023.opengl.exception.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.*;
 import static org.lwjgl.glfw.Callbacks.*;
-import org.lwjgl.glfw.GLFWWindowSizeCallback.SAM;
 
 import java.nio.*;
 
@@ -42,7 +41,7 @@ public class Frame {
 		glfwSetErrorCallback(errorCallback);
 		
 		//init
-		if(glfwInit() != GL11.GL_TRUE)throw new FrameException("GLFW not init");
+		if(!glfwInit())throw new FrameException("GLFW not init");
 		
 		//config de la fenetre
 		glfwDefaultWindowHints();
@@ -100,7 +99,7 @@ public class Frame {
 		glfwSetErrorCallback(errorCallback);
 		
 		//init
-		if(glfwInit() != GL11.GL_TRUE)throw new FrameException("GLFW not init");
+		if(!glfwInit())throw new FrameException("GLFW not init");
 		
 		//config de la fenetre
 		glfwDefaultWindowHints();
@@ -216,14 +215,11 @@ public class Frame {
 	}
 	
 	/**
-	 * @return true si la croix rouge a été cliquer
+	 * @return true si la croix rouge a ete cliquer
 	 */
 	public boolean isClosedRequested(){
-		if(glfwWindowShouldClose(windowID) == GL11.GL_FALSE){
-			return false;
-		}else{
-			return true;
-		}
+		return glfwWindowShouldClose(windowID);
+		
 	}
 	
 	public void setTitle(String title){
